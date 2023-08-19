@@ -12,7 +12,6 @@ int main (){
 
     std::cout << "Random = " << random << '\n';
     std::cout << test2 << '\n';
-    std::cout<< "elijah is gay";
     return 0; 
     
    /*
