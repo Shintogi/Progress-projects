@@ -6,18 +6,20 @@ using namespace std;
 
 bool isLoggedIN(){
 
- string username, password, un,pw;
- cout << "Enter username: "; cin >> username;
- cout << "Enter password: "; cin >> password; 
+    string username, password, inputUsername,InputPassword;
 
- // reading a file
- ifstream read( username + ".txt");
- getline(read, un);
- getline(read, pw);
+    cout << "Enter username: "; cin >> username;
+    cout << "Enter password: "; cin >> password; 
 
- return un == username && pw == password;
+    // reading a file
+    ifstream read( username + ".txt");
+    getline(read, inputUsername);
+    getline(read, InputPassword);
+
+    return inputUsername == username && InputPassword == password;
 }
- int main(){
+ int main()
+{
     while (true){
         
         int choice{};
@@ -27,7 +29,7 @@ bool isLoggedIN(){
         if (choice == 1)
         {
             
-         string username, password;
+            string username, password;
         
             cout << "Create a username: "; cin >> username;
             cout << "Create a password: "; cin >> password;
@@ -46,21 +48,26 @@ bool isLoggedIN(){
             {
                 if (!status)
                 {
-                cout << "False Login!" << endl;
-                std::cin.get();
-                return EXIT_FAILURE;
+
+                    cout << "False Login!" << endl;
+                    std::cin.get();
+                    return EXIT_FAILURE;
+
                 }
                 else
                 {
-                cout << "Successfully logged in!" << endl;
-                std::cin.get();
-                return EXIT_SUCCESS;
+                    
+                    cout << "Successfully logged in!" << endl;
+                    std::cin.get();
+                    return EXIT_SUCCESS;
+
                 }
             }   
         }
     }
-        system("pause");
-        return 0;
+
+    system("pause");
+    return 0;
  }
      
 
