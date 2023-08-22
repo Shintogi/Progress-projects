@@ -62,7 +62,7 @@ def get_songs_by_artist(token, artist_id):
 
 token = get_token()
 print (token)
-result = search_for_artist(token, "Eve")
+result = search_for_artist(token, "Eve JP")
 artist_id = result["id"]
 songs = get_songs_by_artist(token, artist_id)
 print(songs)
