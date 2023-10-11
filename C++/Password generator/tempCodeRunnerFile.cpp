@@ -37,7 +37,7 @@ int main ()// generating random numbers between 0-1000, but it generates incrame
     std::srand(static_cast<unsigned int>(std::time(0)));
 
     // Generate a random password with 12 characters
-    std::string password = mainpassword(27);
+    std::string password = mainpassword(10);
 
     // Output the password
     std::cout << "The password is: " << password << std::endl;
