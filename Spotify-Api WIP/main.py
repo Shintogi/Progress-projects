@@ -4,6 +4,7 @@ import base64
 from requests import post, get
 import json
 
+
 load_dotenv()
 
 client_id = os.getenv("CLIENT_ID")
@@ -20,7 +21,7 @@ def get_token():
         "Authorization": "Basic " + auth_base64,
         "Content-Type": "application/x-www-form-urlencoded"
     }
-    
+    #converting json data to string to be able to access it properly#
     data = {"grant_type": "client_credentials"}
     result = post (url, headers=headers, data=data)
     json_result = json.loads(result.content)
@@ -52,17 +53,29 @@ def search_for_artist(token, artist_name):
     return json_result[0]
 
 def get_songs_by_artist(token, artist_id):
-    url = f"https://api.spotify.com/v1/artists/{artist_id}/top-tracks?country=JP"
+    url = f"https://api.spotify.com/v1/artists/{artist_id}/top-tracks?country=US"
     headers = get_auth_header(token)
     result = get(url, headers=headers)
     json_result = json.loads(result.content)["tracks"]
     return json_result
 
+#Functions for getting artist playlists#
+def seach_for_playlists(token, playlist):
+    url = "https://api.spotify.com/v1/playlists/{playlist_id}"
+    headers = get_auth_header(token)
+    
+
+def get_songs_by_artist(token, artist_id):
+    url = f"https://api.spotify.com/v1/playlists/{artist_id}/market=US"
+    
+
+    
+
 
 
 token = get_token()
 print (token)
-result = search_for_artist(token, "Eve JP")
+result = search_for_artist(token, "Man with A Misson")
 artist_id = result["id"]
 songs = get_songs_by_artist(token, artist_id)
 print(songs)
