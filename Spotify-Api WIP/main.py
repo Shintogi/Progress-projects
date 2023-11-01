@@ -60,26 +60,32 @@ def get_songs_by_artist(token, artist_id):
     return json_result
 
 #Functions for getting artist playlists#
-def seach_for_playlists(token, playlist):
+def get_playlist_by_artist(token, playlist):
     url = "https://api.spotify.com/v1/playlists/{playlist_id}"
     headers = get_auth_header(token)
+    result = get(url, headers=headers)
+    json_result = json.loads(result.content)
+    return json_result
     
-
-def get_songs_by_artist(token, artist_id):
-    url = f"https://api.spotify.com/v1/playlists/{artist_id}/market=US"
-    
-
-    
-
-
 
 token = get_token()
 print (token)
 result = search_for_artist(token, "Man with A Misson")
 artist_id = result["id"]
 songs = get_songs_by_artist(token, artist_id)
+playlists = get_playlist_by_artist(token, artist_id)
+print (playlists)
 print(songs)
 
-for idx, song in enumerate(songs):
-    print(f"{idx + 1}. {song['name']}")
+if songs:
+
+    for idx, song in enumerate(songs):
+        print(f"{idx + 1}. {song['name']}")
+else:
+    print("No songs found")
+if playlists:
+    for idx, play in enumerate(playlists):
+        print(f"{idx + 1}. {playlists['']}")
+else:
+    print("No playlists found")
 
