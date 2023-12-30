@@ -38,19 +38,21 @@ def get_auth_header(token):
 
 #Function that searches for an artist#
 
-def search_for_artist(token, artist_name):
+def search_for_artist_and_playlists(token, artist_name, playlist_name):
     url = "https://api.spotify.com/v1/search"
     headers = get_auth_header(token)
     query = f"?q={artist_name}&type=artist&limit=1"
+    
 
     query_url = url + query 
     result = get(query_url,headers=headers)
-    json_result = json.loads(result.content)["artists"]["items"]
+    json_result = json.loads(result.content)["artists"]["playlists"]["items"]
 
     if len (json_result) == 0:
-        print("No artist with this name exists....")
-        return None
-    return json_result[0]
+        print(f"No playlist with the name '{playlist_name}' exists for the artist '{artist_name}'.")
+        return None 
+    return json_result[0]['id']
+
 
 def get_songs_by_artist(token, artist_id):
     url = f"https://api.spotify.com/v1/artists/{artist_id}/top-tracks?country=US"
@@ -70,8 +72,9 @@ def get_playlist_by_artist(token, playlist):
 
 token = get_token()
 print (token)
-result = search_for_artist(token, "Man with A Misson")
-artist_id = result["id"]
+artist_name=("Man with A Misson")
+playlist_name=("Playlist Name")
+artist_id, playlists_id = search_for_artist_and_playlists ((token, artist_name, playlist_name))
 songs = get_songs_by_artist(token, artist_id)
 playlists = get_playlist_by_artist(token, artist_id)
 print (playlists)
