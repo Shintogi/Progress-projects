@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-import base64
+import base64  
 from requests import post, get
 import json
 
@@ -38,18 +38,16 @@ def get_auth_header(token):
 
 #Function that searches for an artist#
 
-def search_for_artist_and_playlists(token, artist_name, playlist_name):
+def search_for_artist(token, artist_name):
     url = "https://api.spotify.com/v1/search"
     headers = get_auth_header(token)
     query = f"?q={artist_name}&type=artist&limit=1"
-    
-
     query_url = url + query 
     result = get(query_url,headers=headers)
-    json_result = json.loads(result.content)["artists"]["playlists"]["items"]
+    json_result = json.loads(result.content)["artists"]["items"]
 
     if len (json_result) == 0:
-        print(f"No playlist with the name '{playlist_name}' exists for the artist '{artist_name}'.")
+       # print(f"No playlist with the name '{playlist_name}' exists for the artist '{artist_name}'.")
         return None 
     return json_result[0]['id']
 
@@ -60,35 +58,47 @@ def get_songs_by_artist(token, artist_id):
     result = get(url, headers=headers)
     json_result = json.loads(result.content)["tracks"]
     return json_result
-
 #Functions for getting artist playlists#
+
 def get_playlist_by_artist(token, playlist):
     url = "https://api.spotify.com/v1/playlists/{playlist_id}"
     headers = get_auth_header(token)
     result = get(url, headers=headers)
     json_result = json.loads(result.content)
     return json_result
-    
 
 token = get_token()
 print (token)
 artist_name=("Man with A Misson")
-playlist_name=("Playlist Name")
-artist_id, playlists_id = search_for_artist_and_playlists ((token, artist_name, playlist_name))
+playlist_name=("Gacha Pop")
+artist_id = search_for_artist(token, artist_name) #playlist_name))
 songs = get_songs_by_artist(token, artist_id)
-playlists = get_playlist_by_artist(token, artist_id)
-print (playlists)
-print(songs)
+# ...
+'''
+print("\nSongs:")
+if songs:
+    for idx, song in enumerate(songs):
+        print(f"{idx + 1}. {song['name'].encode('utf-8').decode('cp1252', 'ignore')}")
+else:
+    print("No songs found")
 
+# ...
+
+#playlists = get_playlist_by_artist(token, artist_id)
+
+#print (playlists)
+#print(songs)
+'''
 if songs:
 
     for idx, song in enumerate(songs):
-        print(f"{idx + 1}. {song['name']}")
+        print(f"{idx + 1}. {song['name'].encode('utf-8').decode('cp1252', 'ignore')}")
 else:
     print("No songs found")
+    
 if playlists:
     for idx, play in enumerate(playlists):
         print(f"{idx + 1}. {playlists['']}")
 else:
     print("No playlists found")
-
+    
