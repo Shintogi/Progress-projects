@@ -56,49 +56,55 @@ def get_songs_by_artist(token, artist_id):
     url = f"https://api.spotify.com/v1/artists/{artist_id}/top-tracks?country=US"
     headers = get_auth_header(token)
     result = get(url, headers=headers)
-    json_result = json.loads(result.content)["tracks"]
-    return json_result
+    json_result = json.loads(result.content)
+    
+    #JSON response when there is no tracks
+    if "tracks" in json_result:
+        return json_result["tracks"][:10]
+    else:
+        print("Error in the JSON response, tracks not found")
+        return None
 #Functions for getting artist playlists#
 
-def get_playlist_by_artist(token, playlist):
-    url = "https://api.spotify.com/v1/playlists/{playlist_id}"
+def get_albums_by_artist(token,artist_id):
+    url = f"https://api.spotify.com/v1/artists/{artist_id}/albums?limit=10"
     headers = get_auth_header(token)
     result = get(url, headers=headers)
     json_result = json.loads(result.content)
-    return json_result
+    
+     #JSON response when there is no tracks
+    if "items" in json_result:
+        return json_result["items"]
+    else:
+        print("Error in the JSON response, tracks not found")
+        return None
 
 token = get_token()
 print (token)
-artist_name=("Man with A Misson")
-playlist_name=("Gacha Pop")
-artist_id = search_for_artist(token, artist_name) #playlist_name))
-songs = get_songs_by_artist(token, artist_id)
-# ...
-'''
-print("\nSongs:")
-if songs:
-    for idx, song in enumerate(songs):
-        print(f"{idx + 1}. {song['name'].encode('utf-8').decode('cp1252', 'ignore')}")
+
+artist_name=("Coldplay")
+artist_id = search_for_artist(token, artist_name)
+
+if artist_id:
+
+    artist_id = search_for_artist(token, artist_name) #playlist_name))
+    songs = get_songs_by_artist(token, artist_id)
+    Albums = get_albums_by_artist(token, artist_id)
+
+
+    print("\nSongs:")
+    if songs:
+        for idx, song in enumerate(songs):
+            print(f"{idx + 1}. {song['name'].encode('utf-8').decode('cp1252', 'ignore')}")
+    else:
+        print("No songs found")
+
+    print("\nAlbums:")
+    if Albums:
+        for idx, album in enumerate(Albums):
+            print(f"{idx + 1}. {album['name']}")
+    else:
+            print("No albums found")
 else:
-    print("No songs found")
+            print(f"No artist found with the name '{artist_name}'.")
 
-# ...
-
-#playlists = get_playlist_by_artist(token, artist_id)
-
-#print (playlists)
-#print(songs)
-'''
-if songs:
-
-    for idx, song in enumerate(songs):
-        print(f"{idx + 1}. {song['name'].encode('utf-8').decode('cp1252', 'ignore')}")
-else:
-    print("No songs found")
-    
-if playlists:
-    for idx, play in enumerate(playlists):
-        print(f"{idx + 1}. {playlists['']}")
-else:
-    print("No playlists found")
-    
